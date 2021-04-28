@@ -1,0 +1,7 @@
+name: PhaseCosmetics
+version: ${project.version}
+main: net.phasemc.phasecosmetics.PhaseCosmetics
+commands:
+  tags:
+    usage: /<command>
+    description: A command to change you suffix.
