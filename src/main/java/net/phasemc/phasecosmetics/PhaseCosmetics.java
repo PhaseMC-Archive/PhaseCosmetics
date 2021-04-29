@@ -22,6 +22,7 @@ public final class PhaseCosmetics extends JavaPlugin {
         config = getConfig();
         config.addDefault("hide-item.enabled", "&bPlayers &7(&aShown&7)");
         config.addDefault("hide-item.disabled", "&bPlayers &7(&cHidden&7)");
+        config.addDefault("chat-format", "%vault_prefix%<PLAYER> &8» &f<MESSAGE>");
         config.options().copyDefaults(true);
         saveDefaultConfig();
 

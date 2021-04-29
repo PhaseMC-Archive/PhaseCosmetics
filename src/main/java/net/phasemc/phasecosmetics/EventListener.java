@@ -1,5 +1,6 @@
 package net.phasemc.phasecosmetics;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.types.SuffixNode;
 import org.bukkit.Material;
@@ -9,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -104,6 +106,17 @@ public class EventListener implements Listener {
             }
 
         }
+
+    }
+
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent e) {
+
+        Player p = e.getPlayer();
+        String format = PhaseCosmetics.config.getString("chat-format").replace("<PLAYER>", "%1$s").replace("<MESSAGE>", "%2$s");
+        format = PlaceholderAPI.setPlaceholders(e.getPlayer(), format);
+        e.setFormat(format);
+        e.setMessage(e.getMessage());
 
     }
 
