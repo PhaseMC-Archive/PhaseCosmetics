@@ -3,12 +3,15 @@ package net.phasemc.phasecosmetics;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.types.SuffixNode;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
-
-import java.util.Objects;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class EventListener implements Listener {
 
@@ -45,6 +48,60 @@ public class EventListener implements Listener {
 
             Player p = (Player) e.getWhoClicked();
             p.updateInventory();
+
+        } else if (Utils.isHideItem(e.getCurrentItem())) {
+
+            e.setCancelled(true);
+
+        }
+
+    }
+
+    @EventHandler
+    public void onItemDrop(PlayerDropItemEvent e) {
+
+        if (Utils.isHideItem(e.getItemDrop().getItemStack())) e.setCancelled(true);
+
+    }
+
+    @EventHandler
+    public void onPlayerClick(PlayerInteractEvent e) {
+
+        if ((e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) && Utils.isHideItem(e.getItem())) {
+
+            e.getItem().setDurability(Utils.arePlayersHidden(e.getPlayer()) ? (short) 10 : 8);
+            ItemMeta itemMeta = e.getItem().getItemMeta();
+            itemMeta.setDisplayName(Utils.arePlayersHidden(e.getPlayer()) ? Utils.hideItemEnabledName : Utils.hideItemDisabledName);
+            e.getItem().setItemMeta(itemMeta);
+            if (Utils.arePlayersHidden(e.getPlayer())) {
+
+                Utils.removePlayerFromList(e.getPlayer(), "hide-item.player-uuids");
+                for (Player p : PhaseCosmetics.server.getOnlinePlayers()) {
+
+                    e.getPlayer().hidePlayer(p);
+
+                }
+                for (OfflinePlayer p : PhaseCosmetics.server.getOfflinePlayers()) {
+
+                    e.getPlayer().hidePlayer(p.getPlayer());
+
+                }
+
+            } else {
+
+                Utils.addPlayerToList(e.getPlayer(), "hide-item.player-uuids");
+                for (Player p : PhaseCosmetics.server.getOnlinePlayers()) {
+
+                    e.getPlayer().showPlayer(p);
+
+                }
+                for (OfflinePlayer p : PhaseCosmetics.server.getOfflinePlayers()) {
+
+                    e.getPlayer().showPlayer(p.getPlayer());
+
+                }
+
+            }
 
         }
 
