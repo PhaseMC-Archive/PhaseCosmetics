@@ -5,3 +5,6 @@ commands:
   tags:
     usage: /<command>
     description: A command to change you suffix.
+permissions:
+  cosmetic.chat.color:
+    default: op

@@ -3,6 +3,7 @@ package net.phasemc.phasecosmetics;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.types.SuffixNode;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -14,6 +15,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.permissions.Permission;
 
 public class EventListener implements Listener {
 
@@ -116,7 +118,7 @@ public class EventListener implements Listener {
         String format = PhaseCosmetics.config.getString("chat-format").replace("<PLAYER>", "%1$s").replace("<MESSAGE>", "%2$s");
         format = PlaceholderAPI.setPlaceholders(e.getPlayer(), format);
         e.setFormat(format);
-        e.setMessage(e.getMessage());
+        e.setMessage(p.hasPermission("cosmetic.chat.color") ? ChatColor.translateAlternateColorCodes('&', e.getMessage()) : e.getMessage());
 
     }
 
