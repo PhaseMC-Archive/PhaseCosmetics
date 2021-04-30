@@ -15,7 +15,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.permissions.Permission;
 
 public class EventListener implements Listener {
 
@@ -42,7 +41,7 @@ public class EventListener implements Listener {
                 user.data().remove(SuffixNode.builder(suffix, 1).build());
                 PhaseCosmetics.luckPerms.getUserManager().saveUser(user);
 
-            } else if (e.getCurrentItem().getType() == Material.BARRIER) {
+            } else if (e.getClick().isLeftClick() && e.getCurrentItem().getType() == Material.BARRIER) {
 
                 e.getWhoClicked().closeInventory();
 

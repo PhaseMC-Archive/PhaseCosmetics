@@ -23,7 +23,7 @@ public class Utils {
 
     public static boolean isHideItem(ItemStack item) {
 
-        return isHideItem(item.getItemMeta().getDisplayName()) && item.getType() == Material.INK_SACK;
+        return item != null && isHideItem(item.getItemMeta().getDisplayName()) && item.getType() == Material.INK_SACK;
 
     }
 
