@@ -13,6 +13,7 @@ public class Utils {
 
     public static String hideItemEnabledName = ChatColor.translateAlternateColorCodes('&', PhaseCosmetics.config.getString("hide-item.enabled"));
     public static String hideItemDisabledName = ChatColor.translateAlternateColorCodes('&', PhaseCosmetics.config.getString("hide-item.disabled"));
+    public static String emptyTagsName = ChatColor.translateAlternateColorCodes('&', PhaseCosmetics.config.getString("tags.empty"));
 
     public static boolean isHideItem(String name) {
 

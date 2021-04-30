@@ -3,6 +3,7 @@ package net.phasemc.phasecosmetics.commands;
 import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.PermissionNode;
 import net.phasemc.phasecosmetics.PhaseCosmetics;
+import net.phasemc.phasecosmetics.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -54,6 +55,24 @@ public class TagsCommands implements TabCompleter, CommandExecutor {
                 }
 
             }
+            if (!tagsInv.contains(Material.NAME_TAG)) {
+
+                ItemStack noTagsPlaceholder = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+                ItemMeta noTagsPlaceholderMeta = noTagsPlaceholder.getItemMeta();
+                noTagsPlaceholderMeta.setDisplayName(Utils.emptyTagsName);
+                noTagsPlaceholder.setItemMeta(noTagsPlaceholderMeta);
+
+                for (int i = 0; i < 54; i++) {
+
+                    if (tagsInv.getItem(i) == null) {
+
+                        tagsInv.setItem(i, noTagsPlaceholder);
+
+                    }
+                }
+
+            }
+
             p.openInventory(tagsInv);
 
             return true;
