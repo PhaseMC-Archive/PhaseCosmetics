@@ -41,14 +41,16 @@ public class Utils {
         if (list == null) list = new ArrayList<String>();
         list.add(p.getUniqueId().toString());
         PhaseCosmetics.config.set(path, list);
+        uuidList = PhaseCosmetics.config.getStringList("hide-item.player-uuids");
 
     }
 
     public static void removePlayerFromList(Player p, String path) {
 
-        List<String> list = PhaseCosmetics.config.getStringList(path);
+        List<String> list = uuidList;
         list.remove(p.getUniqueId().toString());
         PhaseCosmetics.config.set(path, list);
+        uuidList = PhaseCosmetics.config.getStringList("hide-item.player-uuids");
 
     }
 

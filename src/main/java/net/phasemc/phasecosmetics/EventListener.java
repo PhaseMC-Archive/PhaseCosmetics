@@ -71,7 +71,7 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onPlayerClick(PlayerInteractEvent e) {
-
+        
         if ((e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) && Utils.isHideItem(e.getItem())) {
 
             e.getItem().setDurability(Utils.arePlayersHidden(e.getPlayer()) ? (short) 10 : 8);
@@ -84,7 +84,7 @@ public class EventListener implements Listener {
                 for (Player p : PhaseCosmetics.server.getOnlinePlayers()) {
 
                     if (p == null) continue;
-                    e.getPlayer().hidePlayer(p);
+                    e.getPlayer().showPlayer(p);
 
                 }
 
@@ -94,7 +94,7 @@ public class EventListener implements Listener {
                 for (Player p : PhaseCosmetics.server.getOnlinePlayers()) {
 
                     if (p == null) continue;
-                    e.getPlayer().showPlayer(p);
+                    e.getPlayer().hidePlayer(p);
 
                 }
 
@@ -121,12 +121,6 @@ public class EventListener implements Listener {
         for (String uuid : Utils.uuidList) {
 
             PhaseCosmetics.server.getPlayer(uuid).hidePlayer(e.getPlayer());
-
-        }
-        for (Player p : PhaseCosmetics.server.getOnlinePlayers()) {
-
-            if (Utils.uuidList.contains(p.getUniqueId().toString())) continue;
-            p.showPlayer(e.getPlayer());
 
         }
 
