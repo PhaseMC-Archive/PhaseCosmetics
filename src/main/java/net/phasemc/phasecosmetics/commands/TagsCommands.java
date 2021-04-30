@@ -1,7 +1,9 @@
 package net.phasemc.phasecosmetics.commands;
 
-import net.luckperms.api.node.NodeType;
-import net.luckperms.api.node.types.PermissionNode;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.Node;
+import net.luckperms.api.query.QueryMode;
+import net.luckperms.api.query.QueryOptions;
 import net.phasemc.phasecosmetics.PhaseCosmetics;
 import net.phasemc.phasecosmetics.Utils;
 import org.bukkit.Bukkit;
@@ -18,6 +20,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,8 +35,12 @@ public class TagsCommands implements TabCompleter, CommandExecutor {
             Inventory tagsInv = Bukkit.createInventory(null, 54, "Tags Menu");
             setupBorders(tagsInv, Material.STAINED_GLASS_PANE, 15);
 
-            Set<String> permissions = PhaseCosmetics.luckPerms.getUserManager().getUser(p.getUniqueId()).getNodes(NodeType.PERMISSION).stream().map(PermissionNode::getPermission).collect(Collectors.toSet());
-            for (String perm : permissions) {
+            User user = PhaseCosmetics.luckPerms.getUserManager().getUser(p.getUniqueId());
+            Set<String> permissions = user.resolveInheritedNodes(QueryOptions.builder(QueryMode.CONTEXTUAL).build()).stream().map(Node::getKey).collect(Collectors.toSet());
+
+            for (String permEntry : permissions) {
+
+                String perm = permEntry;
 
                 if (perm.startsWith("cosmetic.suffix")) {
 
