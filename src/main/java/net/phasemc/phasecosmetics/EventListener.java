@@ -71,7 +71,7 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onPlayerClick(PlayerInteractEvent e) {
-        
+
         if ((e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) && Utils.isHideItem(e.getItem())) {
 
             e.getItem().setDurability(Utils.arePlayersHidden(e.getPlayer()) ? (short) 10 : 8);
