@@ -14,6 +14,7 @@ public class Utils {
     public static String hideItemEnabledName = ChatColor.translateAlternateColorCodes('&', PhaseCosmetics.config.getString("hide-item.enabled"));
     public static String hideItemDisabledName = ChatColor.translateAlternateColorCodes('&', PhaseCosmetics.config.getString("hide-item.disabled"));
     public static String emptyTagsName = ChatColor.translateAlternateColorCodes('&', PhaseCosmetics.config.getString("tags.empty"));
+    public static List<String> uuidList = PhaseCosmetics.config.getStringList("hide-item.player-uuids");
 
     public static boolean isHideItem(String name) {
 
@@ -23,19 +24,20 @@ public class Utils {
 
     public static boolean isHideItem(ItemStack item) {
 
-        return item != null && isHideItem(item.getItemMeta().getDisplayName()) && item.getType() == Material.INK_SACK;
+        if (item == null || item.getItemMeta().getDisplayName() == null) return false;
+        return isHideItem(item.getItemMeta().getDisplayName()) && item.getType() == Material.INK_SACK;
 
     }
 
     public static boolean arePlayersHidden(Player p) {
 
-        return PhaseCosmetics.config.getStringList("hide-item.player-uuids").contains(p.getUniqueId().toString());
+        return uuidList.contains(p.getUniqueId().toString());
 
     }
 
     public static void addPlayerToList(Player p, String path) {
 
-        List<String> list = PhaseCosmetics.config.getStringList(path);
+        List<String> list = uuidList;
         if (list == null) list = new ArrayList<String>();
         list.add(p.getUniqueId().toString());
         PhaseCosmetics.config.set(path, list);

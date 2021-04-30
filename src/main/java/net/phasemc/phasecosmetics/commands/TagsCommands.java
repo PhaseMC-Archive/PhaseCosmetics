@@ -37,9 +37,7 @@ public class TagsCommands implements TabCompleter, CommandExecutor {
             User user = PhaseCosmetics.luckPerms.getUserManager().getUser(p.getUniqueId());
             Set<String> permissions = user.resolveInheritedNodes(QueryOptions.builder(QueryMode.CONTEXTUAL).build()).stream().map(Node::getKey).collect(Collectors.toSet());
 
-            for (String permEntry : permissions) {
-
-                String perm = permEntry;
+            for (String perm : permissions) {
 
                 if (perm.startsWith("cosmetic.suffix")) {
 

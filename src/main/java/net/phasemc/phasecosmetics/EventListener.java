@@ -14,7 +14,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.Nullable;
 
 public class EventListener implements Listener {
 
@@ -81,12 +83,8 @@ public class EventListener implements Listener {
                 Utils.removePlayerFromList(e.getPlayer(), "hide-item.player-uuids");
                 for (Player p : PhaseCosmetics.server.getOnlinePlayers()) {
 
+                    if (p == null) continue;
                     e.getPlayer().hidePlayer(p);
-
-                }
-                for (OfflinePlayer p : PhaseCosmetics.server.getOfflinePlayers()) {
-
-                    e.getPlayer().hidePlayer(p.getPlayer());
 
                 }
 
@@ -95,12 +93,8 @@ public class EventListener implements Listener {
                 Utils.addPlayerToList(e.getPlayer(), "hide-item.player-uuids");
                 for (Player p : PhaseCosmetics.server.getOnlinePlayers()) {
 
+                    if (p == null) continue;
                     e.getPlayer().showPlayer(p);
-
-                }
-                for (OfflinePlayer p : PhaseCosmetics.server.getOfflinePlayers()) {
-
-                    e.getPlayer().showPlayer(p.getPlayer());
 
                 }
 
@@ -118,6 +112,23 @@ public class EventListener implements Listener {
         format = PlaceholderAPI.setPlaceholders(e.getPlayer(), format);
         e.setFormat(format);
         e.setMessage(p.hasPermission("cosmetic.chat.color") ? ChatColor.translateAlternateColorCodes('&', e.getMessage()) : e.getMessage());
+
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent e) {
+
+        for (String uuid : Utils.uuidList) {
+
+            PhaseCosmetics.server.getPlayer(uuid).hidePlayer(e.getPlayer());
+
+        }
+        for (Player p : PhaseCosmetics.server.getOnlinePlayers()) {
+
+            if (Utils.uuidList.contains(p.getUniqueId().toString())) continue;
+            p.showPlayer(e.getPlayer());
+
+        }
 
     }
 
