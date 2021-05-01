@@ -2,7 +2,7 @@ package net.phasemc.phasecosmetics;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
-import net.phasemc.phasecosmetics.commands.TagsCommands;
+import net.phasemc.phasecosmetics.commands.CommandTags;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -13,9 +13,12 @@ public final class PhaseCosmetics extends JavaPlugin {
     public static LuckPerms luckPerms;
     public static FileConfiguration config;
     public static Server server;
+    public static JavaPlugin plugin;
 
     @Override
     public void onEnable() {
+
+        plugin = this;
 
         server = getServer();
 
@@ -27,7 +30,7 @@ public final class PhaseCosmetics extends JavaPlugin {
         config.options().copyDefaults(true);
         saveDefaultConfig();
 
-        getCommand("tags").setExecutor(new TagsCommands());
+        getCommand("tags").setExecutor(new CommandTags());
         server.getPluginManager().registerEvents(new EventListener(), this);
         luckPerms = LuckPermsProvider.get();
 
@@ -39,11 +42,6 @@ public final class PhaseCosmetics extends JavaPlugin {
             }
         }, 0L, 20);
 
-    }
-
-    @Override
-    public void onDisable() {
-        saveConfig();
     }
 
 }

@@ -37,20 +37,28 @@ public class Utils {
 
     public static void addPlayerToList(Player p, String path) {
 
+        PhaseCosmetics.plugin.reloadConfig();
+
         List<String> list = uuidList;
         if (list == null) list = new ArrayList<String>();
         list.add(p.getUniqueId().toString());
         PhaseCosmetics.config.set(path, list);
         uuidList = PhaseCosmetics.config.getStringList("hide-item.player-uuids");
 
+        PhaseCosmetics.plugin.saveConfig();
+
     }
 
     public static void removePlayerFromList(Player p, String path) {
+
+        PhaseCosmetics.plugin.reloadConfig();
 
         List<String> list = uuidList;
         list.remove(p.getUniqueId().toString());
         PhaseCosmetics.config.set(path, list);
         uuidList = PhaseCosmetics.config.getStringList("hide-item.player-uuids");
+
+        PhaseCosmetics.plugin.saveConfig();
 
     }
 
@@ -58,7 +66,7 @@ public class Utils {
 
         if (p.getInventory().getItem(8) == null) {
 
-            ItemStack hideItem = new ItemStack(Material.INK_SACK, 1, Utils.arePlayersHidden(p) ? (short) 10 : 8);
+            ItemStack hideItem = new ItemStack(Material.INK_SACK, 1, arePlayersHidden(p) ? (short) 10 : 8);
             ItemMeta hideItemMeta = hideItem.getItemMeta();
             hideItemMeta.setDisplayName(arePlayersHidden(p) ? hideItemDisabledName : hideItemEnabledName);
             hideItem.setItemMeta(hideItemMeta);
