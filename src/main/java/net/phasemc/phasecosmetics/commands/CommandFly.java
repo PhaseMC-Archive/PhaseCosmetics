@@ -22,7 +22,7 @@ public class CommandFly implements CommandExecutor, TabCompleter {
 
             p.setAllowFlight(!p.getAllowFlight());
             p.sendMessage(ChatColor.GREEN + "You can" + (p.getAllowFlight() ? "" : "'t") + " fly now!");
-
+            return true;
         }
 
         sender.sendMessage(ChatColor.RED + "Only the player can use this command!");
