@@ -10,10 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class EventListener implements Listener {
@@ -116,11 +113,22 @@ public class EventListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
 
+        String joinMessage = PlaceholderAPI.setPlaceholders(e.getPlayer(), Utils.joinMessage);
+        e.setJoinMessage(joinMessage);
+
         for (String uuid : Utils.uuidList) {
 
             PhaseCosmetics.server.getPlayer(uuid).hidePlayer(e.getPlayer());
 
         }
+
+    }
+
+    @EventHandler
+    public void onPlayerLeave(PlayerQuitEvent e) {
+
+        String leaveMessage = PlaceholderAPI.setPlaceholders(e.getPlayer(), Utils.leaveMessage);
+        e.setQuitMessage(leaveMessage);
 
     }
 

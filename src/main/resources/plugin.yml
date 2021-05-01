@@ -3,8 +3,15 @@ version: ${project.version}
 main: net.phasemc.phasecosmetics.PhaseCosmetics
 commands:
   tags:
-    usage: /<command>
+    usage: "Usage: /<command>"
     description: A command to change you suffix.
+  phasecosmetics:
+    usage: "Usage: /<command> <reload>"
+    description: A main command for the PhaseCosmetics plugin.
+    permission: phasecosmetics.command
+    permission-message: You can't use this command
 permissions:
   cosmetic.chat.color:
+    default: op
+  phasecosmetics.command:
     default: op

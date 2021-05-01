@@ -2,6 +2,7 @@ package net.phasemc.phasecosmetics;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
+import net.phasemc.phasecosmetics.commands.CommandPlugin;
 import net.phasemc.phasecosmetics.commands.CommandTags;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -27,10 +28,13 @@ public final class PhaseCosmetics extends JavaPlugin {
         config.addDefault("hide-item.disabled", "&bPlayers &7(&cHidden&7)");
         config.addDefault("chat-format", "%vault_prefix%<PLAYER> &8» &f<MESSAGE>");
         config.addDefault("tags.empty", "&cNo Tags");
+        config.addDefault("messages.join", "%vault_prefix%%player_name% %vault_suffix% &ehopped into the lobby!");
+        config.addDefault("messages.leave", "%vault_prefix%%player_name% %vault_suffix% &ehopped out of the lobby!");
         config.options().copyDefaults(true);
         saveDefaultConfig();
 
         getCommand("tags").setExecutor(new CommandTags());
+        getCommand("phasecosmetics").setExecutor(new CommandPlugin());
         server.getPluginManager().registerEvents(new EventListener(), this);
         luckPerms = LuckPermsProvider.get();
 
@@ -44,4 +48,8 @@ public final class PhaseCosmetics extends JavaPlugin {
 
     }
 
+    @Override
+    public void onDisable() {
+        saveConfig();
+    }
 }
