@@ -116,6 +116,8 @@ public class EventListener implements Listener {
         String joinMessage = PlaceholderAPI.setPlaceholders(e.getPlayer(), Utils.joinMessage);
         e.setJoinMessage(joinMessage);
 
+        if (e.getPlayer().hasPermission("cosmetic.fly")) e.getPlayer().setFlying(true);
+
         for (String uuid : Utils.uuidList) {
 
             PhaseCosmetics.server.getPlayer(uuid).hidePlayer(e.getPlayer());

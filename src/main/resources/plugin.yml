@@ -13,5 +13,7 @@ commands:
 permissions:
   cosmetic.chat.color:
     default: op
+  cosmetic.fly:
+    default: op
   phasecosmetics.command:
     default: op
