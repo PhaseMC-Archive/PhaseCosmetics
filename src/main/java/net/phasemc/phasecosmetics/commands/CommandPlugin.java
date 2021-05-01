@@ -1,14 +1,13 @@
 package net.phasemc.phasecosmetics.commands;
 
-import net.phasemc.phasecosmetics.PhaseCosmetics;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class CommandPlugin implements CommandExecutor, TabCompleter {
@@ -37,6 +36,6 @@ public class CommandPlugin implements CommandExecutor, TabCompleter {
                     "reload"
                     );
         }
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 }

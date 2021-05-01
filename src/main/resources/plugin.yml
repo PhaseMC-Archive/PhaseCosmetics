@@ -10,6 +10,11 @@ commands:
     description: A main command for the PhaseCosmetics plugin.
     permission: phasecosmetics.command
     permission-message: You can't use this command
+  fly:
+    usage: "Usage: /<command>"
+    description: A command for toggeling flight.
+    permission: cosmetic.fly
+    permission-message: You can't use this command
 permissions:
   cosmetic.chat.color:
     default: op
