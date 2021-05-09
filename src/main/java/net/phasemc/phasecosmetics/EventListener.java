@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -131,6 +132,18 @@ public class EventListener implements Listener {
 
         String leaveMessage = PlaceholderAPI.setPlaceholders(e.getPlayer(), Utils.leaveMessage);
         e.setQuitMessage(leaveMessage);
+
+    }
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent e) {
+
+        if (e.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.YELLOW + "Smooth Stone")) {
+
+            e.getBlockPlaced().setType(Material.DOUBLE_STEP);
+            e.getBlockPlaced().setData((byte) 8);
+
+        }
 
     }
 

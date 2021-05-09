@@ -2,6 +2,7 @@ package net.phasemc.phasecosmetics;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
+import net.phasemc.phasecosmetics.commands.CommandBlock;
 import net.phasemc.phasecosmetics.commands.CommandFly;
 import net.phasemc.phasecosmetics.commands.CommandPlugin;
 import net.phasemc.phasecosmetics.commands.CommandTags;
@@ -37,6 +38,7 @@ public final class PhaseCosmetics extends JavaPlugin {
         getCommand("tags").setExecutor(new CommandTags());
         getCommand("phasecosmetics").setExecutor(new CommandPlugin());
         getCommand("fly").setExecutor(new CommandFly());
+        getCommand("block").setExecutor(new CommandBlock());
         server.getPluginManager().registerEvents(new EventListener(), this);
         luckPerms = LuckPermsProvider.get();
 

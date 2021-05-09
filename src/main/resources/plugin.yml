@@ -15,10 +15,17 @@ commands:
     description: A command for toggeling flight.
     permission: cosmetic.fly
     permission-message: You can't use this command
+  block:
+    usage: "Usage: /<command> <block>"
+    description: A command to give a block without item.
+    permission: phasecosmetics.block
+    permission-message: You can't use this command
 permissions:
   cosmetic.chat.color:
     default: op
   cosmetic.fly:
     default: op
   phasecosmetics.command:
+    default: op
+  phasecosmetics.block:
     default: op
