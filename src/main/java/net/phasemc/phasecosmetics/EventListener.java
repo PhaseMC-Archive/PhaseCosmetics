@@ -154,17 +154,15 @@ public class EventListener implements Listener {
     @EventHandler
     public void onFishing(PlayerFishEvent e) {
 
-        Location hookLoc = e.getHook().getLocation();
-        Location playerLoc = e.getPlayer().getLocation();
+        if (!Utils.isGrapplingHookCooldownOver(e.getPlayer().getUniqueId())) {
 
-        if (e.getState() == PlayerFishEvent.State.FAILED_ATTEMPT || e.getState() == PlayerFishEvent.State.CAUGHT_FISH || e.getState() == PlayerFishEvent.State.IN_GROUND) {
+            e.setCancelled(true);
+            e.getPlayer().sendMessage(ChatColor.RED + "You have cooldown on this item for a second!");
 
-            if (!Utils.isGrapplingHookCooldownOver(e.getPlayer().getUniqueId())) {
+        } else if (e.getState() == PlayerFishEvent.State.FAILED_ATTEMPT || e.getState() == PlayerFishEvent.State.CAUGHT_FISH || e.getState() == PlayerFishEvent.State.IN_GROUND) {
 
-                e.getPlayer().sendMessage(ChatColor.RED + "You have cooldown on this item for a second!");
-                return;
-
-            }
+            Location hookLoc = e.getHook().getLocation();
+            Location playerLoc = e.getPlayer().getLocation();
 
             e.getPlayer().setVelocity(new Vector(hookLoc.getX() - playerLoc.getX(), 1.0D, hookLoc.getZ() - playerLoc.getZ()));
             Utils.addGrapplingHookCooldown(e.getPlayer().getUniqueId(), 1000L);
