@@ -6,6 +6,8 @@ import net.luckperms.api.node.types.SuffixNode;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,8 +17,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
-
-import java.time.LocalDateTime;
 
 public class EventListener implements Listener {
 
@@ -159,15 +159,15 @@ public class EventListener implements Listener {
 
         if (e.getState() == PlayerFishEvent.State.FAILED_ATTEMPT || e.getState() == PlayerFishEvent.State.CAUGHT_FISH || e.getState() == PlayerFishEvent.State.IN_GROUND) {
 
-            /*if (!Utils.isGrapplingHookCooldownOver(e.getPlayer().getUniqueId())) {
+            if (!Utils.isGrapplingHookCooldownOver(e.getPlayer().getUniqueId())) {
 
-                e.getPlayer().sendMessage(ChatColor.RED + "You have cooldown on this item for 2 seconds!");
+                e.getPlayer().sendMessage(ChatColor.RED + "You have cooldown on this item for a second!");
                 return;
 
-            }*/
+            }
 
             e.getPlayer().setVelocity(new Vector(hookLoc.getX() - playerLoc.getX(), 1.0D, hookLoc.getZ() - playerLoc.getZ()));
-            //Utils.addGrapplingHookCooldown(e.getPlayer().getUniqueId(), 2);
+            Utils.addGrapplingHookCooldown(e.getPlayer().getUniqueId(), 1000L);
 
         }
 

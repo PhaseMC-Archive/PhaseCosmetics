@@ -6,12 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.time.LocalDateTime;
-import java.time.temporal.TemporalField;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class Utils {
 
@@ -21,7 +16,7 @@ public class Utils {
     public static String joinMessage = ChatColor.translateAlternateColorCodes('&', PhaseCosmetics.config.getString("messages.join"));
     public static String leaveMessage = ChatColor.translateAlternateColorCodes('&', PhaseCosmetics.config.getString("messages.leave"));
     public static List<String> uuidList = PhaseCosmetics.config.getStringList("hide-item.player-uuids");
-    public static HashMap<UUID, Integer> grapplingHook = new HashMap<UUID, Integer>();
+    public static HashMap<UUID, Long> grapplingHook = new HashMap<UUID, Long>();
 
     public static boolean isHideItem(String name) {
 
@@ -76,16 +71,16 @@ public class Utils {
 
     }
 
-    public static void addGrapplingHookCooldown(UUID uuid, int cooldown) {
+    public static void addGrapplingHookCooldown(UUID uuid, long cooldown) {
 
-        grapplingHook.put(uuid, LocalDateTime.now().getSecond() + cooldown);
+        grapplingHook.put(uuid, System.currentTimeMillis() + cooldown);
 
     }
 
     public static boolean isGrapplingHookCooldownOver(UUID uuid) {
 
         if (!grapplingHook.containsKey(uuid)) return true;
-        else if (grapplingHook.get(uuid) < LocalDateTime.now().getSecond()) {
+        else if (grapplingHook.get(uuid) < System.currentTimeMillis()) {
 
             grapplingHook.remove(uuid);
             return true;
