@@ -89,4 +89,14 @@ public class Utils {
 
     }
 
+    public static void scheduleMultipleDelayedTasks(long delay, Runnable... tasks) {
+
+        for (int i = 0; i < tasks.length; i++) {
+
+            PhaseCosmetics.server.getScheduler().scheduleSyncDelayedTask(PhaseCosmetics.plugin, tasks[i], delay * (i + 1));
+
+        }
+
+    }
+
 }

@@ -20,6 +20,11 @@ commands:
     description: A command to give a block without item.
     permission: phasecosmetics.block
     permission-message: You can't use this command
+  item:
+    usage: "Usage: /<command> <item>"
+    description: A command to give a custom item.
+    permission: phasecosmetics.item
+    permission-message: You can't use this command
 permissions:
   cosmetic.chat.color:
     default: op

@@ -3,16 +3,16 @@ package net.phasemc.phasecosmetics;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.types.SuffixNode;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
+import org.bukkit.*;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -166,6 +166,86 @@ public class EventListener implements Listener {
 
             e.getPlayer().setVelocity(new Vector(hookLoc.getX() - playerLoc.getX(), 1.0D, hookLoc.getZ() - playerLoc.getZ()));
             Utils.addGrapplingHookCooldown(e.getPlayer().getUniqueId(), 1000L);
+
+        }
+
+    }
+
+    @EventHandler
+    public void onProjectileHit(ProjectileHitEvent e) {
+
+        if (e.getEntity().getShooter() instanceof Player) {
+
+            Player p = (Player) e.getEntity().getShooter();
+
+            if (e.getEntityType() == EntityType.ARROW) {
+
+                if (e.getEntity().getCustomName().equals(ChatColor.LIGHT_PURPLE + "Teleport Arrow")) {
+
+                    Location arrowLoc = e.getEntity().getLocation();
+                    arrowLoc.setPitch(p.getLocation().getPitch());
+                    arrowLoc.setYaw(p.getLocation().getYaw());
+                    p.teleport(arrowLoc);
+                    p.getWorld().playSound(arrowLoc, Sound.ENDERMAN_TELEPORT, 0.75F, 2F);
+                    p.getWorld().spigot().playEffect(arrowLoc, Effect.ENDER_SIGNAL);
+                    e.getEntity().remove();
+
+                }
+
+                e.getEntity().remove();
+
+            } else if (e.getEntityType() == EntityType.SNOWBALL) {
+
+                TNTPrimed tnt = (TNTPrimed) e.getEntity().getWorld().spawnEntity(e.getEntity().getLocation(), EntityType.PRIMED_TNT);
+                tnt.setFuseTicks(61);
+                tnt.setCustomName(ChatColor.GREEN + "3");
+                tnt.setCustomNameVisible(true);
+                Utils.scheduleMultipleDelayedTasks(20L, () -> tnt.setCustomName(ChatColor.YELLOW + "2"), () -> tnt.setCustomName(ChatColor.RED + "1"), () -> {
+
+                    Location tntLoc = e.getEntity().getLocation();
+
+                    for (Player player : PhaseCosmetics.server.getOnlinePlayers()) {
+
+                        Location playerLoc = p.getLocation();
+
+                        if (playerLoc.getWorld() != tntLoc.getWorld() || Math.abs(playerLoc.distance(tntLoc)) > 10) continue;
+
+                        player.setVelocity(new Vector(1 / (playerLoc.getX() - tntLoc.getX()), 1.0D, 1 / (playerLoc.getZ() - tntLoc.getZ())));
+
+                    }
+                    tnt.getWorld().createExplosion(tntLoc, 0F);
+                    tnt.remove();
+
+                });
+
+            }
+        }
+
+    }
+
+    @EventHandler
+    public void onProjectileLaunch(ProjectileLaunchEvent e) {
+
+        if (e.getEntity().getShooter() instanceof Player) {
+
+            Player p = (Player) e.getEntity().getShooter();
+
+            if (e.getEntityType() == EntityType.ARROW) {
+
+                if (p.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.LIGHT_PURPLE + "Teleport Bow")) {
+
+                    e.getEntity().setCustomName(ChatColor.LIGHT_PURPLE + "Teleport Arrow");
+                    e.getEntity().setCustomNameVisible(true);
+
+                } else if (p.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Rideable Bow")) {
+
+                    e.getEntity().setCustomName(ChatColor.GREEN + "Rideable Arrow");
+                    e.getEntity().setCustomNameVisible(true);
+                    Utils.scheduleMultipleDelayedTasks(1L, () -> e.getEntity().setPassenger(p));
+
+                }
+
+            }
 
         }
 

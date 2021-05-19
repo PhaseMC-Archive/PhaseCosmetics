@@ -41,6 +41,7 @@ public class CommandBlock implements CommandExecutor, TabCompleter {
 
             return Arrays.asList("smooth_stone");
 
-        }        return Collections.emptyList();
+        }
+        return Collections.emptyList();
     }
 }
