@@ -206,7 +206,7 @@ public class EventListener implements Listener {
 
                     for (Player player : PhaseCosmetics.server.getOnlinePlayers()) {
 
-                        Location playerLoc = p.getLocation();
+                        Location playerLoc = player.getLocation();
 
                         if (playerLoc.getWorld() != tntLoc.getWorld() || Math.abs(playerLoc.distance(tntLoc)) > 10) continue;
 
