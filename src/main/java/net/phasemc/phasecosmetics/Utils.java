@@ -60,7 +60,7 @@ public class Utils {
 
         if (p.getInventory().getItem(8) == null) {
 
-            ItemStack hideItem = new ItemStack(Material.INK_SACK, 1, arePlayersHidden(p) ? (short) 10 : 8);
+            ItemStack hideItem = new ItemStack(Material.INK_SACK, 1, arePlayersHidden(p) ? (short) 8 : 10);
             ItemMeta hideItemMeta = hideItem.getItemMeta();
             hideItemMeta.setDisplayName(arePlayersHidden(p) ? hideItemDisabledName : hideItemEnabledName);
             hideItem.setItemMeta(hideItemMeta);
