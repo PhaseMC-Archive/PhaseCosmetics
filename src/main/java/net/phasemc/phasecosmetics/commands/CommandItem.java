@@ -15,17 +15,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class CommandItem implements CommandExecutor, TabCompleter {
-
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
         if (sender instanceof Player) {
-
             Player p = (Player) sender;
 
             switch (args[0].toLowerCase()) {
-
                 case "teleport_bow":
                     ItemStack teleportBow = new ItemStack(Material.BOW);
                     ItemMeta teleportBowMeta = teleportBow.getItemMeta();
@@ -40,11 +35,8 @@ public class CommandItem implements CommandExecutor, TabCompleter {
                     rideableBow.setItemMeta(rideableBowMeta);
                     p.getInventory().addItem(rideableBow);
                     break;
-
             }
-
             return true;
-
         }
 
         sender.sendMessage(ChatColor.RED + "Only the player can use this command!");
@@ -53,13 +45,10 @@ public class CommandItem implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-
         if (args.length == 1) {
-
             return Arrays.asList("teleport_bow", "rideable_bow");
-
         }
-        return Collections.emptyList();
 
+        return Collections.emptyList();
     }
 }

@@ -12,23 +12,18 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class CommandTags implements TabCompleter, CommandExecutor {
-
+public class CommandTags implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (sender instanceof Player) {
-
             Player p = (Player) sender;
 
             Inventory tagsInv = Bukkit.createInventory(null, 54, "Tags Menu");
@@ -38,13 +33,9 @@ public class CommandTags implements TabCompleter, CommandExecutor {
             Set<String> permissions = user.resolveInheritedNodes(QueryOptions.builder(QueryMode.CONTEXTUAL).build()).stream().map(Node::getKey).collect(Collectors.toSet());
 
             for (String perm : permissions) {
-
                 if (perm.startsWith("cosmetic.suffix")) {
-
                     for (int i = 0; i < 54; i++) {
-
                         if (tagsInv.getItem(i) == null) {
-
                             ItemStack suffixItem = new ItemStack(Material.NAME_TAG);
                             ItemMeta suffixItemMeta = suffixItem.getItemMeta();
                             suffixItemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', perm.replace("cosmetic.suffix.", "")));
@@ -53,42 +44,31 @@ public class CommandTags implements TabCompleter, CommandExecutor {
                             tagsInv.setItem(i, suffixItem);
                             break;
                         }
-
                     }
-
                 }
-
             }
-            if (!tagsInv.contains(Material.NAME_TAG)) {
 
+            if (!tagsInv.contains(Material.NAME_TAG)) {
                 ItemStack noTagsPlaceholder = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
                 ItemMeta noTagsPlaceholderMeta = noTagsPlaceholder.getItemMeta();
                 noTagsPlaceholderMeta.setDisplayName(Utils.emptyTagsName);
                 noTagsPlaceholder.setItemMeta(noTagsPlaceholderMeta);
 
                 for (int i = 0; i < 54; i++) {
-
                     if (tagsInv.getItem(i) == null) {
-
                         tagsInv.setItem(i, noTagsPlaceholder);
-
                     }
                 }
-
             }
 
             p.openInventory(tagsInv);
-
             return true;
-
         }
-
         sender.sendMessage(ChatColor.RED + "Only the player can use this command!");
         return true;
     }
 
     private void setupBorders(Inventory inv, Material mat, int durability) {
-
         ItemStack placeholder = new ItemStack(mat, 1, (short) durability);
         ItemMeta placeholderItemMeta = placeholder.getItemMeta();
         placeholderItemMeta.setDisplayName(" ");
@@ -130,12 +110,5 @@ public class CommandTags implements TabCompleter, CommandExecutor {
         inv.setItem(51, placeholder);
         inv.setItem(52, placeholder);
         inv.setItem(53, placeholder);
-
-
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        return Collections.emptyList();
     }
 }
