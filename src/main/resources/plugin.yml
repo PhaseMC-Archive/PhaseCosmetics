@@ -25,6 +25,8 @@ commands:
     description: A command to give a custom item.
     permission: phasecosmetics.item
     permission-message: You can't use this command
+  gui:
+    usage: "/<command>"
 permissions:
   cosmetic.chat.color:
     default: op
