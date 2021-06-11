@@ -30,6 +30,13 @@ public class Utils {
         return isHideItem(item.getItemMeta().getDisplayName()) && item.getType() == Material.INK_SACK;
     }
 
+    public static boolean matchItem(ItemStack checkItem, Items matchItem) {
+
+        if (checkItem == null || checkItem.getItemMeta().getDisplayName() == null) return false;
+        return checkItem.getItemMeta().getDisplayName().equals(matchItem.getName()) && checkItem.getType() == matchItem.getMaterial();
+
+    }
+
     public static boolean arePlayersHidden(Player p) {
         return uuidList.contains(p.getUniqueId().toString());
     }

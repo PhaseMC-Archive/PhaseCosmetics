@@ -18,6 +18,8 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
+import java.util.Set;
+
 public class EventListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
@@ -55,23 +57,45 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onPlayerClick(PlayerInteractEvent e) {
-        if ((e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) && Utils.isHideItem(e.getItem())) {
-            e.getItem().setDurability(Utils.arePlayersHidden(e.getPlayer()) ? (short) 10 : 8);
-            ItemMeta itemMeta = e.getItem().getItemMeta();
-            itemMeta.setDisplayName(Utils.arePlayersHidden(e.getPlayer()) ? Utils.hideItemEnabledName : Utils.hideItemDisabledName);
-            e.getItem().setItemMeta(itemMeta);
-            if (Utils.arePlayersHidden(e.getPlayer())) {
-                Utils.removePlayerFromList(e.getPlayer(), "hide-item.player-uuids");
-                for (Player p : PhaseCosmetics.server.getOnlinePlayers()) {
-                    if (p == null) continue;
-                    e.getPlayer().showPlayer(p);
+
+        if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+
+            if (Utils.isHideItem(e.getItem())) {
+
+                e.getItem().setDurability(Utils.arePlayersHidden(e.getPlayer()) ? (short) 10 : 8);
+                ItemMeta itemMeta = e.getItem().getItemMeta();
+                itemMeta.setDisplayName(Utils.arePlayersHidden(e.getPlayer()) ? Utils.hideItemEnabledName : Utils.hideItemDisabledName);
+                e.getItem().setItemMeta(itemMeta);
+                if (Utils.arePlayersHidden(e.getPlayer())) {
+
+                    Utils.removePlayerFromList(e.getPlayer(), "hide-item.player-uuids");
+                    for (Player p : PhaseCosmetics.server.getOnlinePlayers()) {
+
+                        if (p == null) continue;
+                        e.getPlayer().showPlayer(p);
+
+                    }
+
+                } else {
+
+                    Utils.addPlayerToList(e.getPlayer(), "hide-item.player-uuids");
+                    for (Player p : PhaseCosmetics.server.getOnlinePlayers()) {
+
+                        if (p == null) continue;
+                        e.getPlayer().hidePlayer(p);
+
+                    }
+
                 }
-            } else {
-                Utils.addPlayerToList(e.getPlayer(), "hide-item.player-uuids");
-                for (Player p : PhaseCosmetics.server.getOnlinePlayers()) {
-                    if (p == null) continue;
-                    e.getPlayer().hidePlayer(p);
-                }
+
+            } else if (Utils.matchItem(e.getItem(), Items.TELEPORT_WAND)) {
+
+                Location teleportLoc = e.getPlayer().getTargetBlock((Set<Material>) null, 8).getLocation();
+                teleportLoc.setDirection(e.getPlayer().getLocation().getDirection());
+                if (teleportLoc.getBlock().getType() != Material.AIR) teleportLoc.add(0D, 1.0D, 0D);
+
+                e.getPlayer().teleport(teleportLoc);
+
             }
         }
     }
@@ -106,9 +130,12 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
-        if (e.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.YELLOW + "Smooth Stone")) {
+
+        if (e.getItemInHand() != null && e.getItemInHand().getItemMeta().getDisplayName() != null && e.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.YELLOW + "Smooth Stone")) {
+
             e.getBlockPlaced().setType(Material.DOUBLE_STEP);
             e.getBlockPlaced().setData((byte) 8);
+
         }
     }
 
