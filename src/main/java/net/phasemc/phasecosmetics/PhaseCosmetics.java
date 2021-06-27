@@ -29,6 +29,8 @@ public final class PhaseCosmetics extends JavaPlugin {
             plugin.saveDefaultConfig();
 
             new GuiParser(getConfig()).makeInventory();
+
+            getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -37,5 +39,10 @@ public final class PhaseCosmetics extends JavaPlugin {
 
         server.getPluginManager().registerEvents(new EventListener(), this);
         server.getPluginManager().registerEvents(new GuiItemCommandListener(), this);
+    }
+
+    @Override
+    public void onDisable() {
+        getServer().getMessenger().unregisterOutgoingPluginChannel(this);
     }
 }

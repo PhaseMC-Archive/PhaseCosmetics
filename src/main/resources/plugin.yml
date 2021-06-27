@@ -26,7 +26,7 @@ commands:
     permission: phasecosmetics.item
     permission-message: You can't use this command
   gui:
-    usage: "/<command>"
+    usage: "/<command> <guiNameFromConfig>"
 permissions:
   cosmetic.chat.color:
     default: op

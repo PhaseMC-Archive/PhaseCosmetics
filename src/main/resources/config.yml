@@ -8,42 +8,35 @@ messages:
   join: '%vault_prefix%%player_name%%vault_suffix% &ehopped into the lobby!'
   leave: '%vault_prefix%%player_name%%vault_suffix% &ehopped out of the lobby!'
 gui:
-  smiley:
-    name: "GUI"
+  Example1:
+    # Haven't found a way to name the gui a special name but have it's core name be there as well, the key is name, so if you wish to change name, change key name
+    #name: "Example 1"
     # Make sure the layout's size is a multiple of 9
     layout: [
-        "x", "x", "l", "x", "x", "x", "l", "x", "x",
-        "x", "x", "l", "x", "x", "x", "l", "x", "x",
-        "x", "x", "x", "x", "l", "x", "x", "x", "x",
-        "l", "x", "x", "x", "l", "l", "x", "x", "l",
-        "x", "l", "x", "x", "x", "x", "x", "l", "x",
-        "x", "x", "l", "x", "x", "x", "l", "x", "x"
+        "x", "x", "x", "x", "x", "x", "x", "x", "x",
+        "x", "x", "x", "x", "x", "x", "x", "x", "x",
+        "x", "x", "x", "x", "x", "x", "x", "x", "x"
     ]
     items:
       x:
-        name: "STAINED_GLASS_PANE:4"
-        executor: "console"
-        commands:
-          - "tell %player% Smile!"
-      l:
         name: "STAINED_GLASS_PANE:7"
 
-  hub:
-    name: "GUI"
+  Example2:
+    # Haven't found a way to name the gui a special name but have it's core name be there as well, the key is name, so if you wish to change name, change key name
+    #name: "Example 2"
     # Make sure the layout's size is a multiple of 9
     layout: [
-        "x", "x", "l", "x", "x", "x", "l", "x", "x",
-        "x", "x", "l", "x", "x", "x", "l", "x", "x",
-        "x", "x", "x", "x", "l", "x", "x", "x", "x",
-        "l", "x", "x", "x", "l", "l", "x", "x", "l",
-        "x", "l", "x", "x", "x", "x", "x", "l", "x",
-        "x", "x", "l", "x", "x", "x", "l", "x", "x"
+        "l", "l", "l", "l", "l", "l", "l", "l", "l",
+        "l", "x", "l", "x", "l", "x", "l", "x", "l",
+        "l", "l", "l", "l", "l", "l", "l", "l", "l"
     ]
     items:
       x:
-        name: "STAINED_GLASS_PANE:4"
-        executor: "console"
+        name: "Grass"
+        material: "GRASS"
+        executor: "player"
         commands:
-          - "tell %player% Smile!"
+          - "bungee:hub"
       l:
-        name: "STAINED_GLASS_PANE:7"
+        name: ""
+        material: "STAINED_GLASS_PANE:7"
