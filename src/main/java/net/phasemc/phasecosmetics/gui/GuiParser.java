@@ -22,6 +22,7 @@ public class GuiParser {
     private final Map<String, List<String>> layout;
     @Getter private static Map<String, Inventory> inventory;
     @Getter private static Map<String, Map<String, GuiItem>> items;
+    @Getter private static Map<ItemStack, GuiItem> guiItems;
 
     public GuiParser(FileConfiguration config) throws IllegalArgumentException {
         this.config = config;
@@ -29,15 +30,19 @@ public class GuiParser {
 
         layout = new HashMap<>();
         for(String key : guiConfig.getKeys(false)) {
-            layout.put(key, guiConfig.getStringList(key + ".layout"));
-        }
+            List<String> layoutGui = guiConfig.getStringList(key + ".layout");
 
-        if(layout.size() > 0 && (layout.size() + 1) % 9 == 0) {
-            throw new IllegalArgumentException("Layouts in minecraft can only be multiples of 9");
+            int layoutSize = layoutGui.size();
+            if(layoutSize > 0 && (layoutSize + 1) % 9 != 0) {
+                throw new IllegalArgumentException("Layouts in minecraft can only be multiples of 9");
+            } else {
+                layout.put(key, layoutGui);
+            }
         }
 
         inventory = new HashMap<>();
         items = new HashMap<>();
+        guiItems = new HashMap<>();
     }
 
     public void makeInventory() throws NullPointerException, IllegalArgumentException, GuiParseException {
@@ -101,6 +106,7 @@ public class GuiParser {
                         customHead.setItemMeta(itemMeta);
 
                         inventory.setItem(layoutSize, customHead);
+                        guiItems.put(customHead, item);
                         continue;
                     }
 
@@ -112,6 +118,7 @@ public class GuiParser {
                         itemStack.setItemMeta(itemMeta);
 
                         inventory.setItem(layoutSize, itemStack);
+                        guiItems.put(itemStack, item);
                     } catch (NullPointerException e) {
                         throw new GuiParseException(key, item);
                     }
