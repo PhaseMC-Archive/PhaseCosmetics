@@ -1,6 +1,7 @@
 name: PhaseCosmetics
 version: ${project.version}
 main: net.phasemc.phasecosmetics.PhaseCosmetics
+softdepend: [CustomHeads]
 commands:
   tags:
     usage: "Usage: /<command>"

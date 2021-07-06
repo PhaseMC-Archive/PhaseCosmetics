@@ -1,5 +1,8 @@
 package net.phasemc.phasecosmetics.gui;
 
+import de.likewhat.customheads.CustomHeads;
+import de.likewhat.customheads.category.Category;
+import de.likewhat.customheads.category.CustomHead;
 import lombok.Getter;
 import net.phasemc.phasecosmetics.PhaseCosmetics;
 import org.bukkit.configuration.ConfigurationSection;
@@ -37,7 +40,7 @@ public class GuiParser {
         items = new HashMap<>();
     }
 
-    public void makeInventory() throws NullPointerException,IllegalArgumentException {
+    public void makeInventory() throws NullPointerException, IllegalArgumentException, GuiParseException {
         List<String> keys = new ArrayList<>();
 
         for(String key : guiConfig.getKeys(false)) {
@@ -67,7 +70,7 @@ public class GuiParser {
                             items.get(key).put(item, new GuiItem(name, material, null, null));
                         }
                     } else {
-                        throw new IllegalArgumentException("Item \"" + item + "\" must have a material name!");
+                        throw new GuiParseException(key, item, itemConfig.getString("material"));
                     }
                 }
             }
@@ -82,20 +85,35 @@ public class GuiParser {
             for (int index = 0; index < layout.size(); index++) {
                 for(int layoutSize = 0; layoutSize < layout.get(key).size(); layoutSize++) {
                     GuiItem item = items.get(key).get(layout.get(key).get(layoutSize));
-                    // Why does bukkit have to be so stupid, why not give the current item meta rather than a clone, it adds so many unnecessary lines of code, god why...
-                    ItemStack itemStack = item.toItemStack();
-                    ItemMeta itemMeta = itemStack.getItemMeta();
-                    itemMeta.setDisplayName(item.getName());
-                    itemStack.setItemMeta(itemMeta);
+                    
+                    if(item.getName().equalsIgnoreCase("air")) {
+                        continue;
+                    }
+
+                    if(item.getMaterial().toLowerCase().startsWith("heads:")) {
+                        String[] args = item.getMaterial().split(":");
+
+                        Category category = CustomHeads.getCategoryManager().getCategory(args[1]);
+                        CustomHead customHead = CustomHeads.getApi().getHead(category, Integer.parseInt(args[2]));
+
+                        ItemMeta itemMeta = customHead.getItemMeta();
+                        itemMeta.setDisplayName(item.getName());
+                        customHead.setItemMeta(itemMeta);
+
+                        inventory.setItem(layoutSize, customHead);
+                        continue;
+                    }
 
                     try {
+                        // Why does bukkit have to be so stupid, why not give the current item meta rather than a clone, it adds so many unnecessary lines of code, god why...
+                        ItemStack itemStack = item.toItemStack();
+                        ItemMeta itemMeta = itemStack.getItemMeta();
+                        itemMeta.setDisplayName(item.getName());
+                        itemStack.setItemMeta(itemMeta);
+
                         inventory.setItem(layoutSize, itemStack);
                     } catch (NullPointerException e) {
-                        throw new NullPointerException("Item \"" + layout.get(key).get(index) + "\" has an invalid material name \"" + item.getMaterial() + "\"!");
-                    } catch (IllegalArgumentException e) {
-                        throw new IllegalArgumentException("Item \"" + layout.get(key).get(index) + "\" has an invalid material name \"" + item.getMaterial() + "\"!");
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        throw new GuiParseException(key, item);
                     }
                 }
             }
